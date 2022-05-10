@@ -1,10 +1,12 @@
 
-# An introduction to { YOUR TOPIC } or A deep dive into { YOUR TOPIC }
-### Level: Beginner or Advanced
+# A Deep Dive into Containerized Model Serving with FastAPI
+### Level: Advanced
 ### Presentation: [Presentation_name](workshop/Presentation_template.pptx)
 
 ## Workshop description
-Describe why your topic is important and what you want to share with your audience
+How can you make an impact with your Machine Learning algorithm on any machine in the world? 
+
+In this hands-on workshop, you will learn all about building an API and putting it into a containerized solution with Docker.
 
 ## Requirements
 Do not forget to indicate Python version and any other tools
@@ -15,7 +17,7 @@ Do not forget to indicate Python version and any other tools
 * Start { TOOL } and navigate to the workshop folder
 
 ## Video record
-Re-watch YouTube stream [here](link)
+Re-watch YouTube stream [here](https://youtu.be/CBeliQek-Pw)
 
 ## Credits
 This workshop was set up by @pyladiesams and {your github handler}
