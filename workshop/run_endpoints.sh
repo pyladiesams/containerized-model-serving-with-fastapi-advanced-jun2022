@@ -1,0 +1,2 @@
+docker build -t music_style_image .
+docker run --env-file=.env -i -t -p 8080:8080 --name music_style -v "/${PWD}"/src:/code/src music_style_image bash -c "uvicorn src.main:app --host 0.0.0.0 --port 8080 --reload --debug"

@@ -1,7 +1,7 @@
 
 # A Deep Dive into Containerized Model Serving with FastAPI
 ### Level: Advanced
-### Presentation: [Presentation_name](workshop/Presentation_template.pptx)
+### Presentation: [A Deep Dive into Containerized Model Serving with FastAPI](workshop/Presentation_template.pptx)
 
 ## Workshop description
 How can you make an impact with your Machine Learning algorithm on any machine in the world? 
@@ -9,12 +9,14 @@ How can you make an impact with your Machine Learning algorithm on any machine i
 In this hands-on workshop, you will learn all about building an API and putting it into a containerized solution with Docker.
 
 ## Requirements
-Do not forget to indicate Python version and any other tools
-+ add requirements.txt or conda.yml or docker image or Binder/Google Collab link
+
++ Docker desktop
++ [Optional] Spotify developer app [link](https://developer.spotify.com/dashboard/login) (if you want to receive personalised recommendations)
+
 
 ## Usage
 * Clone the repository
-* Start { TOOL } and navigate to the workshop folder
+* Create an spotify app in the developer portal [link](https://developer.spotify.com/dashboard/login)
 
 ## Video record
 Re-watch YouTube stream [here](https://youtu.be/CBeliQek-Pw)
