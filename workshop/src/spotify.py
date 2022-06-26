@@ -10,112 +10,122 @@ import spotipy as sp
 redirect_uri='http://localhost:9000'
 scope = 'playlist-modify-public user-library-read user-follow-read user-top-read playlist-read-private user-read-recently-played'
 
-spt = sp.Spotify(auth_manager=sp.oauth2.SpotifyOAuth(redirect_uri=redirect_uri, scope=scope, open_browser=False))
 
 selected_features = ['danceability', 'energy', 'loudness', 'speechiness',
        'acousticness', 'instrumentalness', 'liveness', 'valence', 'tempo']
 
-def main():
-    tracks = get_tracks()
-    nn = fit_model(tracks[selected_features])
 
-    user_tracks = get_top_user_tracks()
-    prediction = predict(nn, user_tracks)
+class MusicModel:
 
-    print(f"Based on your favourite song '{', '.join(user_tracks.iloc[prediction['index'][0]][['name', 'artists']].values)}' "
-    f"the song with the most similar audio features is '{', '.join(tracks.iloc[prediction['closest'][0]][['name', 'artists']].values)}'")
+    def __init__(self):
 
+        redirect_uri = 'http://localhost:9000'
+        scope = 'user-library-read user-follow-read user-top-read playlist-read-private user-read-recently-played'
 
-def read_user_tracks(term: str):
+        self.spt = self.authenticate(redirect_uri, scope)
 
-    file = f'data/user_tracks_{term}.csv'
+        self.selected_features = ['danceability', 'energy', 'loudness', 'speechiness',
+                             'acousticness', 'instrumentalness', 'liveness', 'valence', 'tempo']
 
-    if os.path.isfile(file):
-        return pd.read_csv(file)
+    def authenticate(self, redirect_uri, scope):
 
-    if os.environ.get('SPOTIPY_CLIENT_ID') and os.environ.get('SPOTIPY_CLIENT_SECRET'):
+        try:
+            spt = sp.Spotify(
+                auth_manager=sp.oauth2.SpotifyOAuth(redirect_uri=redirect_uri, scope=scope, open_browser=False))
+            print('Successfully connected to the Spotify API.')
+            self.read_user_tracks()
+            return spt
 
-        user_tracks=get_top_user_tracks(term)
-        user_tracks.to_csv(file)
-        return user_tracks
+        except sp.oauth2.SpotifyOauthError:
+            print('Not able to authenticate, continue with default data.')
 
-    return pd.read_csv('./data/user_tracks.csv')
+        return None
 
+    def read_user_tracks(self, term: str):
 
-def read_tracks(playlist_id):
+        file = f'data/user_tracks_{term}.csv'
 
-    file = f'data/tracks_{playlist_id}.csv'
+        if os.path.isfile(file):
+            return pd.read_csv(file)
 
-    if os.path.isfile(file):
-        return pd.read_csv(file)
+        if self.spt:
 
-    if os.environ.get('SPOTIPY_CLIENT_ID') and os.environ.get('SPOTIPY_CLIENT_SECRET'):
-        tracks=get_tracks(playlist_id)
-        tracks.to_csv(file)
-        return tracks
+            user_tracks= self.get_top_user_tracks(term)
+            user_tracks.to_csv(file)
+            return user_tracks
 
-    return pd.read_csv('./data/tracks.csv')
+        return pd.read_csv('./data/user_tracks.csv')
 
-        
-def _get_features(track_ids):
-    
-    features = spt.audio_features(track_ids)
+    def read_tracks(self, playlist_id):
 
-    return pd.DataFrame(features)[selected_features]
+        file = f'data/tracks_{playlist_id}.csv'
 
-        
-def _parse_artist_names(artists):
-    names = []
-    for artist in artists:
-        names.append(artist['name'])
+        if os.path.isfile(file):
+            return pd.read_csv(file)
 
-    return ", ".join(names)
+        if self.spt:
+            tracks=self.get_tracks(playlist_id)
+            tracks.to_csv(file)
+            return tracks
 
+        return pd.read_csv('./data/tracks.csv')
 
-def get_tracks(playlist_id: str="4hOKQuZbraPDIfaGbM3lKI"):
-    playlist = spt.playlist(playlist_id)
+    def _get_features(self, track_ids):
 
-    tracks = pd.DataFrame([{'id': i['track']['id'], 
-                            'name': i['track']['name'],
-                            'artists': _parse_artist_names(i['track']['artists'])
-                           } for i in playlist['tracks']['items']])
-                
-    return _get_features(tracks['id']).assign(name=tracks['name']).assign(artists=tracks['artists'])
+        features = self.spt.audio_features(track_ids)
 
+        return pd.DataFrame(features)[self.selected_features]
 
-def get_top_user_tracks(term: str):
-    top_user_tracks = spt.current_user_top_tracks(limit=50, time_range=term)['items']
+    def _parse_artist_names(self, artists):
+        names = []
+        for artist in artists:
+            names.append(artist['name'])
 
-    tracks = pd.DataFrame([{'id': i['id'], 
-                            'name': i['name'],
-                            'artists': _parse_artist_names(i['artists'])} 
-                           for i in top_user_tracks],
-                            )
-    
-    return _get_features(tracks['id']).assign(name=tracks['name']).assign(artists=tracks['artists'])
+        return ", ".join(names)
 
+    def get_tracks(self, playlist_id: str="4hOKQuZbraPDIfaGbM3lKI"):
 
-def fit_model(X):
+        playlist = self.spt.playlist(playlist_id)
 
-    class NN(NearestNeighbors):
-        def predict(self, X):
-            return self.kneighbors(X)
-    
-    pipeline=Pipeline([('scaler', MinMaxScaler()), 
-                        ('nn', NN(n_neighbors=1))])
-    return pipeline.fit(X[selected_features])
+        tracks = pd.DataFrame([{'id': i['track']['id'],
+                                'name': i['track']['name'],
+                                'artists': self._parse_artist_names(i['track']['artists'])
+                               } for i in playlist['tracks']['items']])
 
+        return self._get_features(tracks['id']).assign(name=tracks['name']).assign(artists=tracks['artists'])
 
-def predict(nn, user_tracks, tracks):
+    def get_top_user_tracks(self, term: str):
 
-    distance, indices = nn.predict(user_tracks[selected_features])
-    df = pd.DataFrame({'distance': [x[0] for x in distance], 'track_id': [x[0] for x in indices]})
-    prediction = df.sort_values('distance').reset_index()
+        top_user_tracks = self.spt.current_user_top_tracks(limit=50, time_range=term)['items']
 
-    top_match = prediction.iloc[0]
+        tracks = pd.DataFrame([{'id': i['id'],
+                                'name': i['name'],
+                                'artists': self._parse_artist_names(i['artists'])}
+                               for i in top_user_tracks],
+                                )
 
-    return(
-        f"Based on your favourite song "
-        f"'{', '.join(user_tracks.iloc[int(top_match['index'])][['name', 'artists']].values)}' "
-        f"the song with the most similar audio features is "
-        f"'{', '.join(tracks.iloc[int(top_match['track_id'])][['name', 'artists']].values)}'")
+        return self._get_features(tracks['id']).assign(name=tracks['name']).assign(artists=tracks['artists'])
+
+    def fit_model(self, X):
+
+        class NN(NearestNeighbors):
+            def predict(self, X):
+                return self.kneighbors(X)
+
+        pipeline=Pipeline([('scaler', MinMaxScaler()),
+                            ('nn', NN(n_neighbors=1))])
+        return pipeline.fit(X[self.selected_features])
+
+    def predict(self, nn, user_tracks, tracks):
+
+        distance, indices = nn.predict(user_tracks[self.selected_features])
+        df = pd.DataFrame({'distance': [x[0] for x in distance], 'track_id': [x[0] for x in indices]})
+        prediction = df.sort_values('distance').reset_index()
+
+        top_match = prediction.iloc[0]
+
+        return(
+            f"Based on your favourite song "
+            f"'{', '.join(user_tracks.iloc[int(top_match['index'])][['name', 'artists']].values)}' "
+            f"the song with the most similar audio features is "
+            f"'{', '.join(tracks.iloc[int(top_match['track_id'])][['name', 'artists']].values)}'")

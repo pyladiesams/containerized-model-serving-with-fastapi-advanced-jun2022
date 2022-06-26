@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Query
 from fastapi.responses import HTMLResponse
 
-from src.spotify import read_tracks, read_user_tracks, fit_model, predict
+from src.spotify import MusicModel
 
 description = """
 Spotify: insights in your music taste
@@ -24,8 +24,9 @@ tags_metadata = [
 ]
 
 
-app = FastAPI(debug=True, description=description, openapi_tags=tags_metadata)
+music_model = MusicModel()
 
+app = FastAPI(debug=True, description=description, openapi_tags=tags_metadata)
 
 @app.get("/")
 def root():
@@ -42,7 +43,7 @@ def get_most_listened_songs(term: str = Query("short_term")):
     """
 
     """
-    user_tracks = read_user_tracks(term)
+    user_tracks = music_model.read_user_tracks(term)
 
     return HTMLResponse(content=user_tracks[['name', 'artists']].to_html(), status_code=200)
 
@@ -57,7 +58,7 @@ def get_most_listened_songs(playlist_id: str,):
     """
 
     """
-    tracks = read_tracks(playlist_id)
+    tracks = music_model.read_tracks(playlist_id)
 
     return HTMLResponse(content=tracks[['name', 'artists']].to_html(), status_code=200)
 
@@ -70,9 +71,9 @@ def get_most_listened_songs(playlist_id: str,):
 )
 def get_prediction(term: str = Query("short_term"), playlist_id: str = "37i9dQZF1DXb5BKLTO7ULa"):
 
-    tracks=read_tracks(playlist_id)
-    user_tracks=read_user_tracks(term)
+    tracks=music_model.read_tracks(playlist_id)
+    user_tracks=music_model.read_user_tracks(term)
 
-    nn = fit_model(tracks)
+    nn = music_model.fit_model(tracks)
 
-    return predict(nn, user_tracks, tracks)
+    return music_model.predict(nn, user_tracks, tracks)
