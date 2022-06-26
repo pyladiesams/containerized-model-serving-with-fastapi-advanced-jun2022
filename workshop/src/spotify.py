@@ -23,6 +23,7 @@ class MusicModel:
         scope = 'user-library-read user-follow-read user-top-read playlist-read-private user-read-recently-played'
 
         self.spt = self.authenticate(redirect_uri, scope)
+        self.spt.read_user_tracks()
 
         self.selected_features = ['danceability', 'energy', 'loudness', 'speechiness',
                              'acousticness', 'instrumentalness', 'liveness', 'valence', 'tempo']
@@ -33,7 +34,6 @@ class MusicModel:
             spt = sp.Spotify(
                 auth_manager=sp.oauth2.SpotifyOAuth(redirect_uri=redirect_uri, scope=scope, open_browser=False))
             print('Successfully connected to the Spotify API.')
-            self.read_user_tracks()
             return spt
 
         except sp.oauth2.SpotifyOauthError:
@@ -49,7 +49,6 @@ class MusicModel:
             return pd.read_csv(file)
 
         if self.spt:
-
             user_tracks= self.get_top_user_tracks(term)
             user_tracks.to_csv(file)
             return user_tracks
