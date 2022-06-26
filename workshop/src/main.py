@@ -1,10 +1,12 @@
 from fastapi import FastAPI, Query
 from fastapi.responses import HTMLResponse
 
+
 from src.spotify import MusicModel
+from src.config import Term
 
 description = """
-Spotify: insights in your music taste
+Spotify: receive Spotify songs based on your very own personal music taste
 
 """
 
@@ -19,7 +21,8 @@ tags_metadata = [
     },
     {
         "name": "predict",
-        "description": "Predicts which song from the given playlist is most similar to one of your top songs.",
+        "description": "Predicts which song from the given playlist is \
+            most similar to one of your top songs.",
     },
 ]
 
@@ -28,51 +31,56 @@ music_model = MusicModel()
 
 app = FastAPI(debug=True, description=description, openapi_tags=tags_metadata)
 
+
 @app.get("/")
 def root():
-    return {"message": "Welcome to the spotify clustering app! Please check the terminal whether you need to login."}
+    return {
+        "message": "Welcome to the spotify Music app! \
+            Please check the terminal whether you need to login."
+    }
 
 
 @app.get(
     "/most_listened/1.1.0",
     tags=["most_listened"],
     summary="Shows your 50 most listened songs",
-    # response_model=List[PredOut],
 )
-def get_most_listened_songs(term: str = Query("short_term")):
-    """
-
-    """
+def get_most_listened_songs(term: Term = Query("short_term")):
+    """ """
     user_tracks = music_model.read_user_tracks(term)
 
-    return HTMLResponse(content=user_tracks[['name', 'artists']].to_html(), status_code=200)
+    return HTMLResponse(
+        content=user_tracks[["name", "artists"]].to_html(), status_code=200
+    )
 
 
 @app.get(
     "/show_playlist/1.1.0",
     tags=["show_playlist"],
     summary="Shows songs for the given playlist",
-    # response_model=List[PredOut],
 )
-def get_most_listened_songs(playlist_id: str,):
-    """
-
-    """
+def get_songs_from_playlist(
+    playlist_id: str = "37i9dQZF1DXb5BKLTO7ULa",
+):
+    """ """
     tracks = music_model.read_tracks(playlist_id)
 
-    return HTMLResponse(content=tracks[['name', 'artists']].to_html(), status_code=200)
+    return HTMLResponse(content=tracks[["name", "artists"]].to_html(), status_code=200)
 
 
 @app.get(
     "/predict/1.1.0",
     tags=["predict"],
     summary="Shows a prediction based on your music and given playlist",
-    # response_model=str,
+    response_model=str,
 )
-def get_prediction(term: str = Query("short_term"), playlist_id: str = "37i9dQZF1DXb5BKLTO7ULa"):
-
-    tracks=music_model.read_tracks(playlist_id)
-    user_tracks=music_model.read_user_tracks(term)
+def get_prediction(
+    term: Term = Query("short_term"),
+    playlist_id: str = "37i9dQZF1DXb5BKLTO7ULa",
+):
+    """ """
+    tracks = music_model.read_tracks(playlist_id)
+    user_tracks = music_model.read_user_tracks(term)
 
     nn = music_model.fit_model(tracks)
 

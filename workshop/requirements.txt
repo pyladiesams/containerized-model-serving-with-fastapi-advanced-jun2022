@@ -3,3 +3,4 @@ uvicorn[standard]
 pandas
 spotipy==2.20.0
 Sklearn
+pydantic
