@@ -35,8 +35,13 @@ app = FastAPI(description=description, openapi_tags=tags_metadata)
 
 @app.get("/")
 def root():
+    msg = music_model.authenticate()
+
+    if msg:
+        return {"message": msg}
+
     return {
-        "message": "Welcome to the spotify Music app! \
+        "message": "Welcome to the Spotify Music app! \
             Please check the terminal whether you need to login."
     }
 
@@ -44,7 +49,7 @@ def root():
 @app.get(
     "/most_listened",
     tags=["most_listened"],
-    summary="Shows your 50 most listened songs",
+    summary="Shows your most listened songs",
     response_model=List[Song],
 )
 def get_most_listened_songs(term: Term = Query("short_term"), limit: int = 50, debug: bool = False):

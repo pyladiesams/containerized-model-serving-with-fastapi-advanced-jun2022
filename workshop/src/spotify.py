@@ -13,8 +13,8 @@ import spotipy as sp
 class MusicModel:
     def __init__(self):
 
-        redirect_uri = "http://localhost:9000"
-        scope = "playlist-modify-public user-library-read user-follow-read \
+        self.redirect_uri = "http://localhost:9000"
+        self.scope = "playlist-modify-public user-library-read user-follow-read \
             user-top-read playlist-read-private user-read-recently-played"
 
         self.selected_features = [
@@ -29,28 +29,27 @@ class MusicModel:
             "tempo",
         ]
 
-        self.authenticate(redirect_uri, scope)
-
-    def authenticate(self, redirect_uri: str, scope: str):
+    def authenticate(self) -> str:
         """ Authenticates the user using the client_id and client_secret
         in the environment variables.
 
-        :param redirect_uri: Redirect uri from the Spotify webapp.
-        :param scope: Permissions for the Spotify connection.
+        :return: Message whether authentication was successful.
         """
         try:
             self.spt = sp.Spotify(
                 auth_manager=sp.oauth2.SpotifyOAuth(
-                    redirect_uri=redirect_uri, scope=scope, open_browser=False
+                    redirect_uri=self.redirect_uri, scope=self.scope, open_browser=False
                 )
             )
             self.read_user_tracks(term="short_term")
-            print("Successfully connected to the Spotify API.")
+
+            return "Successfully connected to the Spotify API."
 
         except sp.oauth2.SpotifyOauthError:
-            print("Not able to authenticate, continue with default data.")
+            self.spt = None
 
-        self.spt = None
+            return "Not able to authenticate, continue with default data."
+
 
     def read_user_tracks(self, term: str) -> pd.DataFrame:
         """ Returns the top tracks of a user when the user is authenticated.
@@ -207,6 +206,8 @@ class MusicModel:
 
 if __name__ == "__main__":
     music_model = MusicModel()
+    music_model.authenticate()
+
     print(
         music_model.read_user_tracks("short_term")[["name", "artists"]].iloc[0].values
     )
