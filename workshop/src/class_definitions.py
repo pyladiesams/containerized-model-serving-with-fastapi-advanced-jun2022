@@ -22,15 +22,4 @@ class Song(BaseModel):
 
 
 class PredOut(BaseModel):
-    favourite_song: str
-    most_similar_song: str
-    distance: float
-
-    class Config:
-        schema_extra = {
-            "example": {
-                "favourite_song": "Always Remember Us This Way - Lady Gaga",
-                "most_similar_song": "De Diepte - S10",
-                "distance": 0.15,
-            }
-        }
+    pass

@@ -4,8 +4,6 @@ from fastapi.responses import HTMLResponse
 from src.class_definitions import Term, Song, PredOut
 from src.spotify import MusicModel
 
-from spotipy.client import SpotifyException
-
 from typing import List
 
 description = """
@@ -42,15 +40,16 @@ def root():
                        f"{music_model.auth_msg}"}
 
 
+# Exercise 2.3 : Add a limit parameter to the function below:
 @app.get(
     "/most_listened",
     tags=["most_listened"],
     summary="Shows your most listened songs",
     response_model=List[Song],
 )
-def get_most_listened_songs(term: Term = Query("short_term"), limit: int = 50, debug: bool = False):
+def get_most_listened_songs(term: Term = "short_term", debug: bool = False):
     """ """
-    user_tracks = music_model.read_user_tracks(term)[:limit]
+    user_tracks = music_model.read_user_tracks(term)
 
     if debug:
         return HTMLResponse(
@@ -70,10 +69,7 @@ def get_songs_from_playlist(
     debug: bool = False,
 ):
     """ """
-    try:
-        tracks = music_model.read_tracks(playlist_id)
-    except SpotifyException:
-        raise HTTPException(status_code=404, detail="Playlist id not found")
+    tracks = music_model.read_tracks(playlist_id)
 
     if debug:
         return HTMLResponse(
@@ -83,15 +79,11 @@ def get_songs_from_playlist(
     return tracks[["name", "artists"]].to_dict(orient="records")
 
 
-@app.get(
-    "/predict",
-    tags=["predict"],
-    summary="Shows a prediction based on your music and given playlist",
-    response_model=PredOut,
-)
+# Exercise 3.1: Create a prediction function with term and playlist_id as input arguments.
+# Exercise 3.2: Create your own PyDantic class definition for the predicted output
 def get_prediction(
     term: Term = Query("short_term"),
     playlist_id: str = "37i9dQZF1DXb5BKLTO7ULa",
 ):
 
-    return music_model.predict(term=term, playlist_id=playlist_id)
+    pass
