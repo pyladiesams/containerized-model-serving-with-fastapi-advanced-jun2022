@@ -17,8 +17,6 @@ class MusicModel:
         scope = "playlist-modify-public user-library-read user-follow-read \
             user-top-read playlist-read-private user-read-recently-played"
 
-        self.spt = self.authenticate(redirect_uri, scope)
-
         self.selected_features = [
             "danceability",
             "energy",
@@ -30,20 +28,22 @@ class MusicModel:
             "valence",
             "tempo",
         ]
-        self.read_user_tracks(term="short_term")
+
+        self.spt = self.authenticate(redirect_uri, scope)
 
     def authenticate(self, redirect_uri, scope):
     """
         Authenticate
     """
         try:
-            spt = sp.Spotify(
+            self.spt = sp.Spotify(
                 auth_manager=sp.oauth2.SpotifyOAuth(
                     redirect_uri=redirect_uri, scope=scope, open_browser=False
                 )
             )
+            self.read_user_tracks(term="short_term")
             print("Successfully connected to the Spotify API.")
-            return spt
+            return self.spt
 
         except sp.oauth2.SpotifyOauthError:
             print("Not able to authenticate, continue with default data.")
@@ -153,9 +153,14 @@ class MusicModel:
 
         top_match = prediction.iloc[0]
 
-        return (
-            f"Based on your favourite song "
-            f"'{' - '.join(user_tracks.iloc[int(top_match['index'])][['name', 'artists']].values)}' "
-            f"the song with the most similar audio features is "
-            f"'{' - '.join(tracks.iloc[int(top_match['track_id'])][['name', 'artists']].values)}'"
-        )
+        return {
+            "favourite_song": f"{' - '.join(user_tracks.iloc[int(top_match['index'])][['name', 'artists']].values)}",
+            "most_similar_song": f"{' - '.join(tracks.iloc[int(top_match['track_id'])][['name', 'artists']].values)}",
+        }
+
+
+if __name__ == "__main__":
+    music_model = MusicModel()
+    print(
+        music_model.read_user_tracks("short_term")[["name", "artists"]].iloc[0].values
+    )

@@ -1,9 +1,10 @@
 from fastapi import FastAPI, Query
 from fastapi.responses import HTMLResponse
 
-
+from src.class_definitions import Term, Song, PredOut
 from src.spotify import MusicModel
-from src.config import Term
+
+from typing import List
 
 description = """
 Spotify: receive Spotify songs based on your very own personal music taste
@@ -44,35 +45,45 @@ def root():
     "/most_listened/1.1.0",
     tags=["most_listened"],
     summary="Shows your 50 most listened songs",
+    response_model=List[Song],
 )
-def get_most_listened_songs(term: Term = Query("short_term")):
+def get_most_listened_songs(term: Term = Query("short_term"), debug: bool = False):
     """ """
     user_tracks = music_model.read_user_tracks(term)
 
-    return HTMLResponse(
-        content=user_tracks[["name", "artists"]].to_html(), status_code=200
-    )
+    if debug:
+        return HTMLResponse(
+            content=user_tracks[["name", "artists"]].to_html(), status_code=200
+        )
+    return user_tracks[["name", "artists"]].to_dict(orient="records")
 
 
 @app.get(
     "/show_playlist/1.1.0",
     tags=["show_playlist"],
     summary="Shows songs for the given playlist",
+    response_model=List[Song],
 )
 def get_songs_from_playlist(
     playlist_id: str = "37i9dQZF1DXb5BKLTO7ULa",
+    debug: bool = False,
 ):
     """ """
     tracks = music_model.read_tracks(playlist_id)
 
-    return HTMLResponse(content=tracks[["name", "artists"]].to_html(), status_code=200)
+    if debug:
+        return HTMLResponse(
+            content=tracks[["name", "artists"]].to_html(), status_code=200
+        )
+
+    return tracks[["name", "artists"]].to_dict(orient="records")
 
 
 @app.get(
     "/predict/1.1.0",
     tags=["predict"],
     summary="Shows a prediction based on your music and given playlist",
-    response_model=str,
+    response_model=PredOut,
 )
 def get_prediction(
     term: Term = Query("short_term"),
