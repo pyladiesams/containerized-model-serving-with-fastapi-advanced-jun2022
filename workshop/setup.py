@@ -4,7 +4,7 @@ setup(
     name="src",
     packages=find_packages(include=["src"]),
     version="0.0.1",
-    description="Clustering Spotify listeners by music style",
+    description="Recommending songs based on Spotify listening history",
     long_description="README.md",
     author="Nikki & Karlijn",
     python_requires=">3.5",
