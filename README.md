@@ -13,6 +13,9 @@ A container is an isolated, portable computing environment. It contains everythi
 
 ## Requirements
 
++ git
++ bash shell (git bash on Windows, bash on Linux, zsh/bash on Mac)
++ IDE (Visual Studio Code, PyCharm, ...)
 + Docker desktop
 + [Optional] Spotify developer app [link](https://developer.spotify.com/dashboard/login) (if you want to receive personalised recommendations)
 

@@ -1,0 +1,51 @@
+,danceability,energy,loudness,speechiness,acousticness,instrumentalness,liveness,valence,tempo,name,artists
+0,0.802,0.587,-11.891,0.067,0.0116,0.872,0.0863,0.256,122.005,Schubert: Schwanengesang (Standchen) - Kate Simko Rework,"Kate Simko, London Electronic Orchestra"
+1,0.827,0.151,-14.585,0.0792,0.919,0.0029,0.0928,0.328,124.141,Come Online,"Kid Francescoli, Julia Minkin"
+2,0.597,0.493,-10.998,0.0573,0.217,0.00107,0.0986,0.271,115.022,Strange Entity,Oscar and the Wolf
+3,0.72,0.554,-10.856,0.295,0.802,0.00636,0.165,0.342,121.996,Onbezonnen,Froukje
+4,0.553,0.502,-5.972,0.0409,0.299,0.0,0.764,0.296,129.976,Always Remember Us This Way,Lady Gaga
+5,0.795,0.471,-11.229,0.106,0.694,0.0176,0.109,0.636,94.96,Figure Out,Tess van der Velde
+6,0.392,0.472,-6.632,0.0364,0.76,0.0,0.0815,0.153,85.724,Adem Je In,S10
+7,0.671,0.58,-9.586,0.278,0.238,0.000203,0.113,0.366,106.938,Zonder Gezicht,"Froukje, S10"
+8,0.804,0.53,-11.339,0.0472,0.0507,0.581,0.0718,0.196,123.986,Dogs - Oliver Koletzki Remix,HVOB
+9,0.593,0.394,-14.711,0.0398,0.761,0.0,0.384,0.378,122.019,Kings,Native Young
+10,0.659,0.526,-10.775,0.0365,0.0791,0.841,0.0678,0.309,109.501,Desert Days,Sonny Ism
+11,0.627,0.144,-14.71,0.0414,0.943,0.000245,0.106,0.426,87.11,Tegen De Klippen Op,MEAU
+12,0.658,0.354,-10.355,0.0645,0.792,0.000407,0.374,0.296,135.05,Afgesloten,MEAU
+13,0.827,0.287,-12.596,0.0438,0.0263,0.0246,0.0812,0.259,104.994,Crap Kraft Dinner,Hot Chip
+14,0.474,0.578,-10.943,0.0304,0.346,0.175,0.101,0.0388,99.968,I'm Gonna Leave You - The Cinematic Orchestra Remix,"Melanie De Biasio, The Cinematic Orchestra"
+15,0.732,0.577,-11.007,0.0424,0.396,0.621,0.366,0.106,109.965,"Cours, cours, et cours encore...",Tim Dup
+16,0.807,0.893,-3.745,0.0347,0.0451,2.79e-05,0.366,0.537,126.011,Bad Habits,Ed Sheeran
+17,0.485,0.509,-8.867,0.228,0.562,1.32e-06,0.103,0.231,98.004,五 Dim,Lydmor
+18,0.275,0.36,-12.667,0.0563,0.474,0.204,0.143,0.542,180.117,Untouchable,Jacob Bellens
+19,0.63,0.572,-9.707,0.0349,0.217,0.849,0.0648,0.221,128.002,Can't Do Without You - Tale of Us & Mano Le Tough Remix,"Caribou, Tale Of Us, Mano Le Tough"
+20,0.502,0.397,-8.819,0.0282,0.378,3.44e-05,0.143,0.159,90.043,De Diepte,S10
+21,0.562,0.555,-10.461,0.0319,0.461,0.533,0.129,0.118,93.979,Stir Me Up,Lane 8
+22,0.572,0.385,-6.362,0.0308,0.371,0.0,0.231,0.323,95.799,Shallow,"Lady Gaga, Bradley Cooper"
+23,0.602,0.696,-5.14,0.0333,0.0179,4.62e-06,0.128,0.616,113.923,The Words,Freedom Fry
+24,0.746,0.71,-5.22,0.0429,0.0614,0.000334,0.0677,0.441,121.023,Want You In My Soul,"Lovebirds, Stee Downes"
+25,0.784,0.424,-8.137,0.0353,0.413,0.000316,0.0909,0.451,100.038,Karaköy,Brazilian Girls
+26,0.663,0.655,-10.485,0.0406,0.109,0.796,0.11,0.128,124.002,Coming Back to You,"Lane 8, J. F. July"
+27,0.732,0.76,-6.82,0.0922,0.214,0.00112,0.389,0.318,108.993,Doing Yoga,Kazy Lambist
+28,0.61,0.313,-13.138,0.0323,0.389,0.847,0.0899,0.0864,80.008,Time For Space,Emancipator
+29,0.692,0.495,-12.202,0.0369,0.537,0.817,0.128,0.196,99.995,Giulia,"Alberto Bof, Stephanie Gilmore"
+30,0.471,0.256,-10.537,0.0405,0.82,0.0,0.124,0.266,95.288,I Would Stay,Krezip
+31,0.389,0.177,-13.062,0.0304,0.976,0.961,0.162,0.363,172.117,Pompidou,Portico Quartet
+32,0.556,0.319,-8.251,0.0281,0.893,0.0,0.0996,0.294,135.187,Someone Like You,Adele
+33,0.683,0.297,-13.391,0.0437,0.732,0.0452,0.113,0.0923,123.998,I Fold You,Elder Island
+34,0.734,0.822,-8.68,0.0449,0.607,0.566,0.111,0.0319,120.002,Ages,Vimala
+35,0.824,0.248,-11.168,0.106,0.817,0.0,0.143,0.55,122.966,Teardrops,Peter and Kerry
+36,0.7,0.291,-11.277,0.0669,0.855,0.000696,0.105,0.529,97.834,This Here Island,Dekker
+37,0.694,0.803,-6.567,0.0389,0.0564,0.11,0.131,0.114,119.025,Waiting - Kalter Remix,"Alice Boman, Kalter"
+38,0.763,0.721,-6.767,0.0986,0.0117,7.69e-06,0.0752,0.657,118.049,Animal,Miike Snow
+39,0.718,0.341,-14.206,0.154,0.0261,0.883,0.101,0.375,122.991,Papercut Pilot,Paul Kalkbrenner
+40,0.779,0.508,-12.796,0.0395,0.184,0.841,0.177,0.808,123.0,Tilted - Original Mix,"Kate Simko, London Electronic Orchestra"
+41,0.835,0.793,-10.084,0.0698,0.172,0.809,0.108,0.325,122.011,Paradise Circus - Gui Boratto Remix,"Massive Attack, Gui Boratto"
+42,0.646,0.8,-7.28,0.0313,0.572,0.00252,0.115,0.472,113.024,Yosemite,Hider
+43,0.676,0.637,-10.942,0.0276,0.166,0.643,0.117,0.329,121.994,Dancing People Are Never Wrong - Jan Blomqvist Remix Radio Edit,The Bianca Story
+44,0.945,0.584,-7.649,0.044,0.0955,0.341,0.147,0.626,124.996,No Goodbye,Paul Kalkbrenner
+45,0.586,0.558,-9.957,0.0276,0.0492,0.0516,0.0746,0.292,103.996,Great Escape,Napkey
+46,0.725,0.366,-12.929,0.0593,0.0344,1.36e-05,0.0916,0.228,104.037,Hotel Beds,Elder Island
+47,0.724,0.551,-10.04,0.0316,0.136,0.336,0.159,0.0778,115.001,Morning,Les Gordon
+48,0.768,0.628,-12.994,0.0414,0.00497,0.829,0.098,0.714,119.508,There Will Always Be This Love,"New Jackson, Margie Jean Lewis"
+49,0.741,0.614,-7.255,0.032,0.317,0.0898,0.153,0.652,121.988,Hopes Up,DRAMA
