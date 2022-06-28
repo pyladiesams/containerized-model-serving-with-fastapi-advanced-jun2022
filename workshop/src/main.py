@@ -30,7 +30,7 @@ tags_metadata = [
 
 music_model = MusicModel()
 
-app = FastAPI(debug=True, description=description, openapi_tags=tags_metadata)
+app = FastAPI(description=description, openapi_tags=tags_metadata)
 
 
 @app.get("/")
@@ -42,14 +42,14 @@ def root():
 
 
 @app.get(
-    "/most_listened/1.1.0",
+    "/most_listened",
     tags=["most_listened"],
     summary="Shows your 50 most listened songs",
     response_model=List[Song],
 )
-def get_most_listened_songs(term: Term = Query("short_term"), debug: bool = False):
+def get_most_listened_songs(term: Term = Query("short_term"), limit: int = 50, debug: bool = False):
     """ """
-    user_tracks = music_model.read_user_tracks(term)
+    user_tracks = music_model.read_user_tracks(term)[:limit]
 
     if debug:
         return HTMLResponse(
@@ -59,7 +59,7 @@ def get_most_listened_songs(term: Term = Query("short_term"), debug: bool = Fals
 
 
 @app.get(
-    "/show_playlist/1.1.0",
+    "/show_playlist",
     tags=["show_playlist"],
     summary="Shows songs for the given playlist",
     response_model=List[Song],
@@ -80,7 +80,7 @@ def get_songs_from_playlist(
 
 
 @app.get(
-    "/predict/1.1.0",
+    "/predict",
     tags=["predict"],
     summary="Shows a prediction based on your music and given playlist",
     response_model=PredOut,
@@ -89,10 +89,5 @@ def get_prediction(
     term: Term = Query("short_term"),
     playlist_id: str = "37i9dQZF1DXb5BKLTO7ULa",
 ):
-    """ """
-    tracks = music_model.read_tracks(playlist_id)
-    user_tracks = music_model.read_user_tracks(term)
 
-    nn = music_model.fit_model(tracks)
-
-    return music_model.predict(nn, user_tracks, tracks)
+    return music_model.predict(term, playlist_id)
