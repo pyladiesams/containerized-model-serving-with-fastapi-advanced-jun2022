@@ -33,7 +33,9 @@ class MusicModel:
         self.read_user_tracks(term="short_term")
 
     def authenticate(self, redirect_uri, scope):
-
+    """
+        Authenticate
+    """
         try:
             spt = sp.Spotify(
                 auth_manager=sp.oauth2.SpotifyOAuth(
