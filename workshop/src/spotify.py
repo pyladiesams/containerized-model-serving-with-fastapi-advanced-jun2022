@@ -28,6 +28,7 @@ class MusicModel:
             "valence",
             "tempo",
         ]
+        self.auth_msg = self.authenticate()
 
     def authenticate(self) -> str:
         """ Authenticates the user using the client_id and client_secret
@@ -206,7 +207,6 @@ class MusicModel:
 
 if __name__ == "__main__":
     music_model = MusicModel()
-    music_model.authenticate()
 
     print(
         music_model.read_user_tracks("short_term")[["name", "artists"]].iloc[0].values

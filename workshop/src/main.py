@@ -1,8 +1,10 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, HTTPException
 from fastapi.responses import HTMLResponse
 
 from src.class_definitions import Term, Song, PredOut
 from src.spotify import MusicModel
+
+from spotipy.client import SpotifyException
 
 from typing import List
 
@@ -35,15 +37,9 @@ app = FastAPI(description=description, openapi_tags=tags_metadata)
 
 @app.get("/")
 def root():
-    msg = music_model.authenticate()
 
-    if msg:
-        return {"message": msg}
-
-    return {
-        "message": "Welcome to the Spotify Music app! \
-            Please check the terminal whether you need to login."
-    }
+    return {"message": f"Welcome to the Spotify Music app! "
+                       f"{music_model.auth_msg}"}
 
 
 @app.get(
@@ -74,7 +70,10 @@ def get_songs_from_playlist(
     debug: bool = False,
 ):
     """ """
-    tracks = music_model.read_tracks(playlist_id)
+    try:
+        tracks = music_model.read_tracks(playlist_id)
+    except SpotifyException:
+        raise HTTPException(status_code=404, detail="Playlist id not found")
 
     if debug:
         return HTMLResponse(
@@ -95,4 +94,4 @@ def get_prediction(
     playlist_id: str = "37i9dQZF1DXb5BKLTO7ULa",
 ):
 
-    return music_model.predict(term, playlist_id)
+    return music_model.predict(term=term, playlist_id=playlist_id)
