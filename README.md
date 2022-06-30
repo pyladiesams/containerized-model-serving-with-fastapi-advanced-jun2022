@@ -1,7 +1,7 @@
 
 # A Deep Dive into Containerized Model Serving with FastAPI
 ### Level: Advanced
-### Presentation: [A Deep Dive into Containerized Model Serving with FastAPI](workshop/Presentation_template.pptx)
+### Presentation: [A Deep Dive into Containerized Model Serving with FastAPI](workshop/Presentation_PyLadies_FastAPI.pptx)
 
 ## Workshop description
 
